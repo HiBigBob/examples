@@ -5,7 +5,6 @@ var user            = require('../controllers/user');
 var fixture         = require('../controllers/fixture');
 var authenticate    = require('../controllers/auth');
 var task            = require('../controllers/task');
-var tag             = require('../controllers/tag');
 var list             = require('../controllers/list');
 
 // ========================================
@@ -25,6 +24,4 @@ module.exports.set 	= function(app) {
     app.use('/users', [auth, required], user);
     app.use('/lists', [auth, required], list);
     app.use('/tasks', [auth, required], task);
-    app.use('/tags',  [auth, required], tag);
 }
-
