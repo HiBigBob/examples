@@ -1,16 +1,21 @@
-# Todo
+# Todo Front-End - Vue.Js
 
-> A Vue.js project
+## Prerequisites
 
-## Build Setup
+You will need the following things properly installed on your computer.
 
-``` bash
-# install dependencies
-npm install
+* [Node.js](http://nodejs.org/) (with NPM)
 
-# serve with hot reload at localhost:8080
-npm run dev
+## Installation
 
-# build for production with minification
-npm run build
-```
+* `cd front-vuejs`
+* `npm install`
+
+## Running / Development
+
+* `npm run dev`
+* Visit your app at [http://localhost:8080](http://localhost:8080).
+
+### Building production
+
+* `npm run build`
