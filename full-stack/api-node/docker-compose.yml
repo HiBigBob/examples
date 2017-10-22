@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  api:
+    build: .
+    command: npm start
+    volumes:
+      - .:/usr/app/
+    ports:
+      - "4001:4001"
+    environment:
+      PORT: 4001
