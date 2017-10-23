@@ -9,4 +9,17 @@ services:
     ports:
       - "4001:4001"
     environment:
-      PORT: 4001
+      - PORT=4001
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
