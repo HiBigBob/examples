@@ -14,7 +14,10 @@ module.exports = {
     },
     connect: function (callback) {
         var url = this.urlDb();
-        mongoose.connect(url);
+        mongoose.connect(url, {
+          useMongoClient: true,
+          /* other options */
+        });
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
         db.once('open', callback);

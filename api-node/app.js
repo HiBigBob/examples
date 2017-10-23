@@ -1,14 +1,14 @@
-var express         = require('express');
-var path            = require('path');
-var logger          = require('morgan');
-var bodyParser      = require('body-parser');
-var mongoose        = require('mongoose');
-var jwt             = require('jwt-simple');
-var cors            = require('cors');
+const express         = require('express');
+const path            = require('path');
+const logger          = require('morgan');
+const bodyParser      = require('body-parser');
+const mongoose        = require('mongoose');
+const jwt             = require('jwt-simple');
+const cors            = require('cors');
 
-var config          = require('./app/config/config');
-var db              = require('./app/config/db');
-var app             = express();
+const config          = require('./app/config/config');
+const db              = require('./app/config/db');
+const app             = express();
 app.set('jwtTokenSecret', config.secret);
 app.set('port', config.port);
 
@@ -31,11 +31,11 @@ app.use(function(req, res, next) {
     next();
 });
 
-var routing = require('./app/config/routing')
+const routing = require('./app/config/routing')
 routing.set(app);
 
-var server = app.listen(app.get('port'), function () {
-    var port = server.address().port;
+const server = app.listen(app.get('port'), function () {
+    const port = server.address().port;
     console.log('App listening at port %s', port);
 });
 
