@@ -19,3 +19,4 @@
 */testem.log
 
 api-node/data/db
+api-node/package-lock.json
