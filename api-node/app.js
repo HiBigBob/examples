@@ -8,6 +8,7 @@ const cors            = require('cors');
 
 const config          = require('./app/config/config');
 const db              = require('./app/config/db');
+const command         = require('./app/config/command');
 const app             = express();
 app.set('jwtTokenSecret', config.secret);
 app.set('port', config.port);

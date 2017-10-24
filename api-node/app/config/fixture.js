@@ -4,12 +4,13 @@ var Task    = require('../models/task');
 var getSlug = require('../utils/slug');
 
 function loadFixture(callback) {
-    // create the first user
+    // User
     var john = new User({
         username: 'John',
         password: 'password'
     });
 
+    // List
     var title = 'Call john';
     var list1 = new List({
         userId: john._id,
@@ -31,6 +32,7 @@ function loadFixture(callback) {
         slug: getSlug(title),
     });
 
+    // Task
     var task1 = new Task({
         listId: list1._id,
         title: 'EmberJs',
@@ -47,18 +49,6 @@ function loadFixture(callback) {
     });
 
     john.save(function(err) {
-        if (err) console.log(err);
-    });
-
-    tag1.save(function(err) {
-        if (err) console.log(err);
-    });
-
-    tag2.save(function(err) {
-        if (err) console.log(err);
-    });
-
-    tag3.save(function(err) {
         if (err) console.log(err);
     });
 
