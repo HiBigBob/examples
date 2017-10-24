@@ -2,7 +2,6 @@
 // Import des controlleurs
 // ========================================
 var user            = require('../controllers/user');
-var fixture         = require('../controllers/fixture');
 var authenticate    = require('../controllers/auth');
 var task            = require('../controllers/task');
 var list             = require('../controllers/list');
@@ -18,7 +17,6 @@ var required        = require('../middlewares/required');
 // ========================================
 module.exports.set 	= function(app) {
     app.use('/authenticate', authenticate);
-    app.use('/fixture', fixture);
 
     // Routes protégés par un token
     app.use('/users', [auth, required], user);
