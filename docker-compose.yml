@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  api:
+    build: api
+    command: npm start
+    volumes:
+      - ./api:/usr/app/
+    environment:
+      - PORT=3000
+    ports:
+      - "4021:3000"
+    depends_on:
+      - mongodb
+
+  ember:
+    build: ember
+    command: npm start
+    volumes:
+      - ./ember:/usr/app/
+    ports:
+      - "4023:3000"
+
+  vue:
+    build: vue
+    command: npm start
+    volumes:
+      - ./vue:/usr/app/
+    ports:
+      - "4022:3000"
+
+  mongodb:
+    image: mongo:latest
+    command: "mongod --smallfiles --logpath=/dev/null"
+    volumes:
+      - ./api/data/db:/data/db
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+      - "27018:27017"
