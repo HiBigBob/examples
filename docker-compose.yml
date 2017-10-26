@@ -19,7 +19,7 @@ services:
     volumes:
       - ./ember:/usr/app/
     ports:
-      - "4023:3000"
+      - "4022:3000"
 
   vue:
     build: vue
@@ -27,7 +27,15 @@ services:
     volumes:
       - ./vue:/usr/app/
     ports:
-      - "4022:3000"
+      - "4023:3000"
+
+  vue-webpack:
+    build: vue-webpack
+    command: npm run dev
+    volumes:
+      - ./vue-webpack:/usr/app/
+    ports:
+      - "4024:8080"
 
   mongodb:
     image: mongo:latest
