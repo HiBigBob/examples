@@ -10,7 +10,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
+      name: 'hello',
       component: HelloWorld,
       beforeEnter: (to, from, next) => {
         if (!auth.user.authenticated) {

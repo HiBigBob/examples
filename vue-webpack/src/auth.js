@@ -1,49 +1,26 @@
-const API_URL = 'http://api/'
-const LOGIN_URL = API_URL + 'authenticate'
-const SIGNUP_URL = API_URL + 'users/'
+import Vue from 'vue';
+
+const LOGIN_URL = '/authenticate'
+const SIGNUP_URL = '/users/'
 
 export default {
-
   user: {
     authenticated: false,
     info: ''
   },
 
   login(context, creds, redirect) {
-    context.$http.post(LOGIN_URL, creds, (data) => {
-      console.log('login')
-      console.log(data)
-      localStorage.setItem('id_token', data.access_token.token)
-      localStorage.setItem('user', JSON.parse(JOSN.stringify(data.user)))
-      console.log(localStorage.getItem('id_token'))
+    return Vue.http.post(LOGIN_URL, creds).then((response) => {
+      localStorage.setItem('id_token', response.data.access_token.token)
+      localStorage.setItem('user', JSON.parse(JSON.stringify(response.data.user)))
 
       this.user.authenticated = true
-      this.user.info = data.user
+      this.user.info = response.data.user
 
-      if(redirect) {
-        // router.go(redirect)
-        console.log(redirect);
-      }
-
-    }).error((err) => {
-      context.error = err
-    })
-  },
-
-  signup(context, creds, redirect) {
-    context.$http.post(SIGNUP_URL, creds, (data) => {
-      localStorage.setItem('id_token', data.id_token)
-
-      this.user.authenticated = true
-
-      if(redirect) {
-        // router.go(redirect)
-        console.log(redirect);
-      }
-
-    }).error((err) => {
-      context.error = err
-    })
+      return this.user
+    }).catch((err, req) => {
+      if (err.response.status == 401) return {'error': {'msg': err.response.statusText}};
+    });
   },
 
   logout() {
@@ -53,12 +30,7 @@ export default {
 
   checkAuth() {
     var jwt = localStorage.getItem('id_token')
-    if(jwt) {
-      this.user.authenticated = true
-    }
-    else {
-      this.user.authenticated = false
-    }
+    this.user.authenticated = jwt ? true : false
   },
 
   getAuthHeader() {
