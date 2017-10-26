@@ -6,7 +6,7 @@ var getSlug = require('../utils/slug');
 function loadFixture(callback) {
     // User
     var john = new User({
-        username: 'John',
+        username: 'john',
         password: 'password'
     });
 
