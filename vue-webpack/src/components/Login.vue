@@ -50,10 +50,10 @@
 </template>
 
 <script>
-import auth from '../auth.js'
+import auth from '@/auth.js'
 
 export default {
-  name: 'HelloWorld',
+  name: 'Login',
   data() {
     return {
       credentials: {

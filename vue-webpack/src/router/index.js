@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/Login'
+import auth from '@/auth.js'
 
 Vue.use(Router)
 
@@ -12,7 +13,7 @@ export default new Router({
       name: 'Hello',
       component: HelloWorld,
       beforeEnter: (to, from, next) => {
-        if (localStorage.getItem('ok', false)) {
+        if (!auth.user.authenticated) {
           next('/login')
         }
 
@@ -21,7 +22,7 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       component: Login
     }
   ]

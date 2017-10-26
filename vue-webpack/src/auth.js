@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/'
+const API_URL = 'http://api/'
 const LOGIN_URL = API_URL + 'authenticate'
 const SIGNUP_URL = API_URL + 'users/'
 
