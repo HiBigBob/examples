@@ -9,27 +9,30 @@ router.post('/', function(req, res){
     if (req.body.username && req.body.password) {
         UserModel.findOne({ username: req.body.username }, function(err, user) {
             if (err) res.status(401).json({ error: 'Authentication error' })
-
-            if (user.password != req.body.password) {
-                res.status(401).json({ error: 'Authentication failed. Wrong password.' });
+            if (!user) {
+              res.status(401).json({ error: 'Authentication error' })
             } else {
-                // Great, user has successfully authenticated, so we can generate and send them a token.
-                var expires = moment().add(1, 'days')
-                var token = jwt.encode(
-                    {
-                        iss: user.id,
-                        exp: expires
-                    },
-                    config.secret
-                );
-                user.password = '';
-                res.json({
-                    user : user,
-                    access_token : {
-                        token : token,
-                        expires : expires
-                    }
-                });
+              if (user.password != req.body.password) {
+                  res.status(401).json({ error: 'Authentication failed. Wrong password.' });
+              } else {
+                  // Great, user has successfully authenticated, so we can generate and send them a token.
+                  var expires = moment().add(1, 'days')
+                  var token = jwt.encode(
+                      {
+                          iss: user.id,
+                          exp: expires
+                      },
+                      config.secret
+                  );
+                  user.password = '';
+                  res.json({
+                      user : user,
+                      access_token : {
+                          token : token,
+                          expires : expires
+                      }
+                  });
+              }
             }
         });
     } else {
