@@ -1,5 +1,7 @@
 <template>
-    <input :placeholder="placeholder" v-model="newElement" @keyup.enter="addElement">
+    <div class="control">
+      <input class="input" :placeholder="placeholder" v-model="newElement" @keyup.enter="addElement">
+    </div>
 </template>
 
 <script>

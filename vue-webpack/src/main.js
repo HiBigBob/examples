@@ -13,6 +13,8 @@ Vue.component('task-item', taskItem);
 Vue.component('add-element', addElement);
 
 axios.defaults.baseURL = 'http://localhost:4021';
+axios.defaults.headers.common['Authorization'] = `Bearer ${auth.getToken()}`;
+
 Vue.http = Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false

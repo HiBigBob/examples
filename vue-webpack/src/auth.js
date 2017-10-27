@@ -37,5 +37,9 @@ export default {
     return {
       'Authorization': 'Bearer ' + localStorage.getItem('id_token')
     }
+  },
+
+  getToken() {
+    return localStorage.getItem('id_token')
   }
 }
