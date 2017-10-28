@@ -3,7 +3,7 @@
     <input type="checkbox" :id="task._id">
     <label :for="task._id" style="width: 90%" v-on:click="changeDone" :class="classDone">
       {{ task.title }}
-      <small class="float--right">{{ task.createTime | moment }}</small>
+      <small class="is-pulled-right">{{ task.createTime | moment }}</small>
     </label>
     <i v-if="done" class="float--right icon-trash-empty"></i>
   </a>

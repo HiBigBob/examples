@@ -21,7 +21,7 @@
         {{ list.title }}
     </a>
     <a class="" @click="() => this.showAddForm = !this.showAddForm">
-      +
+      <i class="fa fa-plus-square"></i>
     </a>
     <a>
       <i class="icon-sort" @click="setSortTasks" style="font-size: 16px;"></i>
@@ -32,7 +32,7 @@
       <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
     </a>
     <a class="" @click="() => this.showAddForm = !this.showAddForm">
-      -
+      <i class="fa fa-minus-square"></i>
     </a>
   </p>
   <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
