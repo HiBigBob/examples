@@ -3,46 +3,42 @@
       <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
           <div class="card">
-            <div class="card-content">
+            <div class="">
 
               <div class="content">
-<div>
-    <div class="columns">
-      <div class="column is-4">
-        <input class="input" placeholder="Search" v-model="searchTask">
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column is-4">
-        <div class="collection">
-          <div class="collection-header" >
-            <h3>
-              <span @click="setElement('')">Lists of tasks</span>
-              <i class="icon-sort" @click="setSortLists" style="font-size: 16px;"></i>
-            </h3>
-          </div>
-
-          <div class="collection-item" v-for="list in filteredLists" @click="setElement(list._id, list.title)">
-              <i v-if="list._id == element.id" class="icon-right-open"></i>
-              {{ list.title }}
-          </div>
-          <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
-        </div>
-      </div>
-      <div class="column is-8">
-        <div class="collection">
-          <div class="collection-header">
-            <h3>
-              Tasks
-              <i class="icon-sort" @click="setSortTasks" style="font-size: 16px;"></i>
-            </h3>
-          </div>
-
-          <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
-          <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
-        </div>
-      </div>
-    </div>
+<div class="panel">
+  <div class="panel-block">
+    <p class="control has-icons-left">
+      <input class="input is-small" type="text" placeholder="search" v-model="searchTask">
+      <span class="icon is-small is-left">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+  <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
+    <a class="is-active" @click="setElement('')">All</a>
+    <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
+        {{ list.title }}
+    </a>
+    <a class="" @click="() => this.showAddForm = !this.showAddForm">
+      +
+    </a>
+    <a>
+      <i class="icon-sort" @click="setSortTasks" style="font-size: 16px;"></i>
+    </a>
+  </p>
+  <p class="panel-tabs" v-if="showAddForm" style="margin-bottom:0">
+    <a>
+      <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
+    </a>
+    <a class="" @click="() => this.showAddForm = !this.showAddForm">
+      -
+    </a>
+  </p>
+  <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
+  <div class="panel-block">
+    <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
+  </div>
 </div>
               </div>
             </div>
@@ -65,6 +61,8 @@ export default {
     var sortLists = 1
     var element = {}
     return {
+      classIsActive: 'is-active',
+      showAddForm: false,
       lists: Array,
       tasks: Array,
       searchTask: '',

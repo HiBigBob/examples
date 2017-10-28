@@ -1,6 +1,6 @@
 <template>
     <div class="control">
-      <input class="input" :placeholder="placeholder" v-model="newElement" @keyup.enter="addElement">
+      <input class="input is-small" :placeholder="placeholder" v-model="newElement" @keyup.enter="addElement">
     </div>
 </template>
 
