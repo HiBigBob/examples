@@ -1,51 +1,42 @@
 <template>
-    <div class="container">
-      <div class="columns is-mobile">
-        <div class="column is-half is-offset-one-quarter">
-          <div class="card">
-            <div class="">
-
-              <div class="content">
-<div class="panel">
-  <div class="panel-block">
-    <p class="control has-icons-left">
-      <input class="input is-small" type="text" placeholder="search" v-model="searchTask">
-      <span class="icon is-small is-left">
-        <i class="fa fa-search"></i>
-      </span>
-    </p>
-  </div>
-  <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
-    <a class="is-active" @click="setElement('')">All</a>
-    <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
-        {{ list.title }}
-    </a>
-    <a class="" @click="() => this.showAddForm = !this.showAddForm">
-      <i class="fa fa-plus-square"></i>
-    </a>
-    <a>
-      <i class="icon-sort" @click="setSortTasks" style="font-size: 16px;"></i>
-    </a>
-  </p>
-  <p class="panel-tabs" v-if="showAddForm" style="margin-bottom:0">
-    <a>
-      <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
-    </a>
-    <a class="" @click="() => this.showAddForm = !this.showAddForm">
-      <i class="fa fa-minus-square"></i>
-    </a>
-  </p>
-  <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
-  <div class="panel-block">
-    <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
-  </div>
-</div>
-              </div>
-            </div>
-          </div>
+  <div class="card">
+    <div class="content">
+      <div class="panel">
+        <div class="panel-block">
+          <p class="control has-icons-left">
+          <input class="input is-small" type="text" placeholder="search" v-model="searchTask">
+          <span class="icon is-small is-left">
+            <i class="fa fa-search"></i>
+          </span>
+          </p>
+        </div>
+        <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
+        <a class="is-active" @click="setElement('')">All</a>
+        <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
+          {{ list.title }}
+        </a>
+        <a class="" @click="() => this.showAddForm = !this.showAddForm">
+          <i class="fa fa-plus-square"></i>
+        </a>
+        <a>
+          <i class="fa fa-sort" @click="setSortTasks" style="font-size: 16px;"></i>
+        </a>
+        </p>
+        <p class="panel-tabs" v-if="showAddForm" style="margin-bottom:0">
+        <a>
+          <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
+        </a>
+        <a class="" @click="() => this.showAddForm = !this.showAddForm">
+          <i class="fa fa-minus-square"></i>
+        </a>
+        </p>
+        <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
+        <div class="panel-block">
+          <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -55,7 +46,6 @@ import Vue from 'vue'
 import auth from '@/auth.js'
 
 export default {
-
   data() {
     var sortTasks = 1
     var sortLists = 1

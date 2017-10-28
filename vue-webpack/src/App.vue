@@ -7,7 +7,13 @@
         </span>
       </p>
     </nav>
-    <router-view/>
+    <div class="container">
+      <div class="columns is-mobile">
+        <div class="column is-half is-offset-one-quarter">
+          <router-view/>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
