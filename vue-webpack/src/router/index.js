@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Home from '@/components/Home'
 import Login from '@/components/Login'
 import auth from '@/auth.js'
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hello',
-      component: HelloWorld,
+      name: 'home',
+      component: Home,
       beforeEnter: (to, from, next) => {
         if (!auth.user.authenticated) {
           next('/login')
