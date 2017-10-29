@@ -11,24 +11,21 @@
           </p>
         </div>
         <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
-        <a class="is-active" @click="setElement('')">All</a>
-        <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
-          {{ list.title }}
-        </a>
-        <a class="" @click="() => this.showAddForm = !this.showAddForm">
-          <i class="fa fa-plus-square"></i>
-        </a>
-        <a>
-          <i class="fa fa-sort" @click="setSortTasks" style="font-size: 16px;"></i>
-        </a>
+          <a class="is-active" @click="setElement('')">All</a>
+          <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
+            {{ list.title }}
+          </a>
+          <a class="" @click="() => this.showAddForm = !this.showAddForm">
+            <i class="fa fa-plus-square"></i>
+          </a>
         </p>
         <p class="panel-tabs" v-if="showAddForm" style="margin-bottom:0">
-        <a>
-          <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
-        </a>
-        <a class="" @click="() => this.showAddForm = !this.showAddForm">
-          <i class="fa fa-minus-square"></i>
-        </a>
+          <a>
+            <add-element :placeholder="placeHolderList" v-on:add="addList"></add-element>
+          </a>
+          <a class="" @click="() => this.showAddForm = !this.showAddForm">
+            <i class="fa fa-minus-square"></i>
+          </a>
         </p>
         <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
         <div class="panel-block">
@@ -47,8 +44,6 @@ import auth from '@/auth.js'
 
 export default {
   data() {
-    var sortTasks = 1
-    var sortLists = 1
     var element = {}
     return {
       classIsActive: 'is-active',
@@ -58,8 +53,6 @@ export default {
       searchTask: '',
       searchList: [],
       element: element,
-      sortTasks: sortTasks,
-      sortLists: sortLists,
       placeHolderList: 'Add list'
     }
   },
@@ -76,7 +69,6 @@ export default {
         return;
       }
 
-      var order = this.sortTasks
       if (this.element.id) {
         tasks = tasks.filter(function (row) {
           return row.listId == this.element.id
@@ -94,20 +86,11 @@ export default {
         this.searchList = [];
       }
 
-      if (tasks.length > 1 && order) {
-        tasks = tasks.slice().sort(function (a, b) {
-          a = a.title
-          b = b.title
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-      }
-
       return tasks
     },
 
     filteredLists: function () {
       var lists = this.lists
-      var order = this.sortLists
 
       if (this.searchList.length) {
         var tmpLists = [];
@@ -119,14 +102,6 @@ export default {
           }, this)
         }, this)
         lists = tmpLists;
-      }
-
-      if (lists.length > 1 && order) {
-        lists = lists.slice().sort(function (a, b) {
-          a = a.title
-          b = b.title
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
       }
 
       return lists
@@ -150,14 +125,6 @@ export default {
         id: _id,
         title: _title
       };
-    },
-
-    setSortTasks() {
-      this.sortTasks = this.sortTasks * -1
-    },
-
-    setSortLists() {
-      this.sortLists = this.sortLists * -1
     },
 
     change(id, done) {
