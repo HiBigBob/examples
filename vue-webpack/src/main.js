@@ -7,9 +7,11 @@ import App from './App'
 import router from './router'
 import auth from '@/auth.js'
 import taskItem from './components/TaskItem.vue'
+import listItem from './components/ListItem.vue'
 import addElement from './components/AddElement.vue'
 
 Vue.component('task-item', taskItem);
+Vue.component('list-item', listItem);
 Vue.component('add-element', addElement);
 
 axios.defaults.baseURL = 'http://localhost:4021';

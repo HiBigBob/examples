@@ -11,10 +11,8 @@
           </p>
         </div>
         <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
-          <a class="is-active" @click="setElement('')">All</a>
-          <a v-for="list in filteredLists" @click="setElement(list._id, list.title)">
-            {{ list.title }}
-          </a>
+          <a @click="setElement()">All</a>
+          <list-item v-for="list in filteredLists" :list="list" :element="element" v-on:click="setElement(list)"></list-item>
           <a class="" @click="() => this.showAddForm = !this.showAddForm">
             <i class="fa fa-plus-square"></i>
           </a>
@@ -62,6 +60,9 @@ export default {
   },
 
   computed: {
+    isActive: function(list) {
+      return list._id == this.element.id
+    },
     filteredTasks: function () {
       var tasks = this.tasks
 
@@ -120,11 +121,15 @@ export default {
   },
 
   methods: {
-    setElement(_id, _title) {
-      this.element = {
-        id: _id,
-        title: _title
-      };
+    setElement(list) {
+      if (list) {
+        this.element = {
+          id: list._id,
+          title: list.title
+        };
+      } else {
+        this.element = {};
+      }
     },
 
     change(id, done) {
