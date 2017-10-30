@@ -21,7 +21,7 @@ export default {
         return
       }
       this.newElement = ''
-      this.$emit('add', value)
+      this.$emit('submit', value)
     }
   }
 }

@@ -25,9 +25,9 @@
             <i class="fa fa-minus-square"></i>
           </a>
         </p>
-        <task-item v-for="task in filteredTasks" :key="task._id" :task="task" v-on:change="editTask"></task-item>
+        <task-item v-for="task in filteredTasks" :key="task._id" :task="task" v-on:change="editTask" v-on:remove="deleteTask"></task-item>
         <div class="panel-block">
-          <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
+          <add-element :placeholder="placeHolderTodo" v-on:submit="addTask"></add-element>
         </div>
       </div>
     </div>
@@ -145,13 +145,13 @@ export default {
       });
     },
 
-    addTodo(value) {
+    addTask(value) {
       Vue.http.post('/tasks', {
         title: value,
         listId: this.element.id
       }, headers).then((response) => {
         if (response.status == 200) {
-          this.tasks.push(JSON.parse(JSON.stringify(response.body)))
+          this.tasks.push(response.data)
         }
       }, (response) => {
         console.log(response)
@@ -166,6 +166,16 @@ export default {
           this.tasks.map((task) => {
             if (task._id !== id) return task
             return Object.assign({}, task, response.data)
+          })
+        }
+      });
+    },
+
+    deleteTask(id) {
+      Vue.http.delete(`/tasks/${id}`, headers).then((response) => {
+        if (response.status == 204) {
+          this.tasks = this.tasks.filter((task) => {
+            return task._id !== id
           })
         }
       });
