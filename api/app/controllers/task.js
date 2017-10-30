@@ -3,7 +3,7 @@ var router      = express.Router();
 var Task        = require('../models/task');
 
 router.param('id', function(req, res, next, value){
-    Task.find({_id: value}, function (err, task) {
+    Task.findOne({_id: value}, function (err, task) {
         if (err) res.status(404).json({error: 'Not found'});
         req.task = task;
         next();
@@ -37,11 +37,10 @@ router.post('/', function(req, res, next){
 });
 
 router.put('/:id', function(req, res, next) {
-    if (!req.body.title && !req.body.tags) return next(new Error('Param is missing.'));
-    Task.update({_id: req.task._id}, {$set: {title: req.body.title, tags: req.body.tags}}, function(err) {
+    Task.update({_id: req.task._id}, {$set: {done: req.body.done}}, function(err) {
         if (err) return next(new Error(err));
 
-        Task.findOne({ _id: value}, function(err, task) {
+        Task.findOne({ _id: req.task._id}, function(err, task) {
             if (err) return next(new Error(err));
             res.status(200).json(task);
         });
