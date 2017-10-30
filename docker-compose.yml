@@ -37,6 +37,14 @@ services:
     ports:
       - "4024:8080"
 
+  vue-vuex-webpack:
+    build: vue-vuex-webpack
+    command: npm run dev
+    volumes:
+      - ./vue-vuex-webpack:/usr/app/
+    ports:
+      - "4025:8080"
+
   mongodb:
     image: mongo:latest
     command: "mongod --smallfiles --logpath=/dev/null"
