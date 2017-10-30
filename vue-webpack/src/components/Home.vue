@@ -12,7 +12,7 @@
         </div>
         <p class="panel-tabs" v-if="!showAddForm" style="margin-bottom:0">
           <a @click="setElement()">All</a>
-          <list-item v-for="list in filteredLists" :list="list" :element="element" v-on:click="setElement(list)"></list-item>
+          <list-item v-for="list in filteredLists" :key="list._id" :list="list" :element="element" v-on:click="setElement(list)"></list-item>
           <a class="" @click="() => this.showAddForm = !this.showAddForm">
             <i class="fa fa-plus-square"></i>
           </a>
@@ -25,7 +25,7 @@
             <i class="fa fa-minus-square"></i>
           </a>
         </p>
-        <task-item v-for="task in filteredTasks" :task="task" v-on:change="change"></task-item>
+        <task-item v-for="task in filteredTasks" :key="task._id" :task="task" v-on:change="editTask"></task-item>
         <div class="panel-block">
           <add-element :placeholder="placeHolderTodo" v-on:add="addTodo"></add-element>
         </div>
@@ -39,6 +39,8 @@
 import moment from 'moment'
 import Vue from 'vue'
 import auth from '@/auth.js'
+
+const headers = {'Authorization': `Bearer ${auth.getToken()}`};
 
 export default {
   data() {
@@ -60,9 +62,6 @@ export default {
   },
 
   computed: {
-    isActive: function(list) {
-      return list._id == this.element.id
-    },
     filteredTasks: function () {
       var tasks = this.tasks
 
@@ -132,31 +131,25 @@ export default {
       }
     },
 
-    change(id, done) {
-      this.total += 1
-    },
-
     getData() {
-      Vue.http.get('/lists').then((response) => {
-            console.log(JSON.parse(JSON.stringify(response.data)))
-            this.lists = JSON.parse(JSON.stringify(response.data));
-      }, (response) => {
-        console.log(response)
-      })
+      Vue.http.get('/lists', headers).then((response) => {
+            this.lists = response.data;
+      }).catch((err, req) => {
+        if (err.response.status == 401) this.$router.push({path: '/login'})
+      });
 
-      Vue.http.get('/tasks').then((response) => {
-            console.log(JSON.parse(JSON.stringify(response.data)))
-            this.tasks = JSON.parse(JSON.stringify(response.data));
-      }, (response) => {
-        console.log(response)
-      })
+      Vue.http.get('/tasks', headers).then((response) => {
+            this.tasks = response.data;
+      }).catch((err, req) => {
+        if (err.response.status == 401) this.$router.push({path: '/login'})
+      });
     },
 
     addTodo(value) {
       Vue.http.post('/tasks', {
         title: value,
         listId: this.element.id
-      }).then((response) => {
+      }, headers).then((response) => {
         if (response.status == 200) {
           this.tasks.push(JSON.parse(JSON.stringify(response.body)))
         }
@@ -165,10 +158,23 @@ export default {
       });
     },
 
+    editTask(id, done) {
+      Vue.http.put(`/tasks/${id}`, {
+        done
+      }, headers).then((response) => {
+        if (response.status == 200) {
+          this.tasks.map((task) => {
+            if (task._id !== id) return task
+            return Object.assign({}, task, response.data)
+          })
+        }
+      });
+    },
+
     addList(value) {
       Vue.http.post('/lists', {
         title: value
-      }).then((response) => {
+      }, headers).then((response) => {
         if (response.status == 200) {
           this.lists.push(JSON.parse(JSON.stringify(response.body)))
         }
