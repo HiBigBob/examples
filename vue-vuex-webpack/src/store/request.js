@@ -3,16 +3,16 @@ import Vue from 'vue';
 export default {
   getLists() {
     return new Promise((resolve, reject) => {
-      Vue.http.get('/player', {
+      Vue.http.get('/lists', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('id_token')}`,
         }
       }).then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
-          localStorage.removeItem('token');
+          localStorage.removeItem('id_token');
         }
         reject(error);
       });
@@ -21,9 +21,9 @@ export default {
 
   getTasks() {
     return new Promise((resolve, reject) => {
-      Vue.http.get('/player/filter', {
+      Vue.http.get('/tasks', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('id_token')}`,
         }
       }).then((response) => {
         resolve(response.data);

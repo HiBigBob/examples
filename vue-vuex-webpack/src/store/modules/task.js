@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import request from '@store/request';
+import request from '@/store/request';
 import * as types from '@/store/mutation-types';
 
 const filterTask = (state) => {
@@ -32,7 +32,7 @@ const filterTask = (state) => {
   return state
 };
 
-const filterTask = (state) => {
+const filterList = (state) => {
   let lists = state.lists
 
   if (state.searchList.length) {
@@ -122,6 +122,7 @@ const mutations = {
   [types.RECEIVE_SEARCH](state, { search }) {
     state.searchTask = search;
     state = filterTask(state);
+    state = filterList(state);
   },
 
   [types.RECEIVE_ELEMENT](state, { element }) {
