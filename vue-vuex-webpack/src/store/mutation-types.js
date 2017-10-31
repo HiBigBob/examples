@@ -1,0 +1,11 @@
+export const RECEIVE_LISTS = 'RECEIVE_LISTS';
+export const RECEIVE_TASKS = 'RECEIVE_TASKS';
+export const RECEIVE_ADD_TASK = 'RECEIVE_ADD_TASK';
+export const RECEIVE_EDIT_TASK = 'RECEIVE_EDIT_TASK';
+export const RECEIVE_DELETE_TASK = 'RECEIVE_DELETE_TASK';
+export const RECEIVE_SEARCH = 'RECEIVE_SEARCH';
+export const RECEIVE_ELEMENT = 'RECEIVE_ELEMENT';
+export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGOUT = 'LOGOUT';

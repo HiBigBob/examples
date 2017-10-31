@@ -25,9 +25,9 @@
             <i class="fa fa-minus-square"></i>
           </a>
         </p>
-        <task-item v-for="task in filteredTasks" :key="task._id" :task="task" v-on:change="editTask" v-on:remove="deleteTask"></task-item>
+        <task-item v-for="task in filteredTasks" :key="task._id" :task="task" v-on:change="edit" v-on:remove="delete"></task-item>
         <div class="panel-block">
-          <add-element :placeholder="placeHolderTodo" v-on:submit="addTask"></add-element>
+          <add-element :placeholder="placeHolderTodo" v-on:submit="add"></add-element>
         </div>
       </div>
     </div>
@@ -57,149 +57,40 @@ export default {
     }
   },
 
-  created: function () {
-    this.getData()
+  created() {
+    this.$store.dispatch('getLists');
+    this.$store.dispatch('getTasks');
   },
 
-  computed: {
-    filteredTasks: function () {
-      var tasks = this.tasks
-
-      if (tasks.length == 0) {
-        return;
-      }
-
-      if (this.element.id) {
-        tasks = tasks.filter(function (row) {
-          return row.listId == this.element.id
-        }, this)
-      }
-
-      if (this.searchTask.length > 2) {
-        tasks = tasks.filter(function (row) {
-          if (row.title.toLowerCase().indexOf(this.searchTask.toLowerCase().trim()) != -1) {
-            this.searchList.push(row.listId);
-            return row;
-          }
-        }, this)
-      } else {
-        this.searchList = [];
-      }
-
-      return tasks
-    },
-
-    filteredLists: function () {
-      var lists = this.lists
-
-      if (this.searchList.length) {
-        var tmpLists = [];
-        lists.forEach(function (list) {
-          this.searchList.forEach(function (item) {
-            if (list._id == item) {
-              tmpLists.push(list)
-            }
-          }, this)
-        }, this)
-        lists = tmpLists;
-      }
-
-      return lists
-    },
-
-    placeHolderTodo: function () {
-      var text = this.element.title == undefined ? '' : 'on "' + this.element.title + '" list';
-      return 'Add task ' + text;
-    }
-  },
-
-  filters: {
-    capitalize: function (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    }
-  },
+  computed: mapGetters({
+    lists: 'lists',
+    tasks: 'tasks',
+    element: 'element',
+    searchList: 'searchList',
+    searchTask: 'searchTask',
+  }),
 
   methods: {
+    ...mapActions([
+      'launchSearch',
+      'selectElement',
+      'addTask',
+      'editTask',
+      'deleteTask',
+    ]),
     setElement(list) {
-      if (list) {
-        this.element = {
-          id: list._id,
-          title: list.title
-        };
-      } else {
-        this.element = {};
-      }
+      this.$store.dispatch('selectElement', { id: list._id, title: list.title });
     },
-
-    getData() {
-      Vue.http.get('/lists', headers).then((response) => {
-            this.lists = response.data;
-      }).catch((err, req) => {
-        if (err.response.status == 401) this.$router.push({path: '/login'})
-      });
-
-      Vue.http.get('/tasks', headers).then((response) => {
-            this.tasks = response.data;
-      }).catch((err, req) => {
-        if (err.response.status == 401) this.$router.push({path: '/login'})
-      });
+    add(value) {
+      this.$store.dispatch('addTask', {title: value, listId: this.element.id});
     },
-
-    addTask(value) {
-      Vue.http.post('/tasks', {
-        title: value,
-        listId: this.element.id
-      }, headers).then((response) => {
-        if (response.status == 200) {
-          this.tasks.push(response.data)
-        }
-      }, (response) => {
-        console.log(response)
-      });
+    edit(id, done) {
+      this.$store.dispatch('editTask', {id, done});
     },
-
-    editTask(id, done) {
-      Vue.http.put(`/tasks/${id}`, {
-        done
-      }, headers).then((response) => {
-        if (response.status == 200) {
-          this.tasks.map((task) => {
-            if (task._id !== id) return task
-            return Object.assign({}, task, response.data)
-          })
-        }
-      });
-    },
-
-    deleteTask(id) {
-      Vue.http.delete(`/tasks/${id}`, headers).then((response) => {
-        if (response.status == 204) {
-          this.tasks = this.tasks.filter((task) => {
-            return task._id !== id
-          })
-        }
-      });
-    },
-
-    addList(value) {
-      Vue.http.post('/lists', {
-        title: value
-      }, headers).then((response) => {
-        if (response.status == 200) {
-          this.lists.push(JSON.parse(JSON.stringify(response.body)))
-        }
-      }, (response) => {
-        console.log(response)
-      });
+    delete(id) {
+      this.$store.dispatch('deleteTask', {id});
     },
   },
-
-  route: {
-    canActivate() {
-      return auth.user.authenticated
-    }
-  }
-
 }
 </script>
 

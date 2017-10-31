@@ -62,16 +62,11 @@ export default {
   },
   methods: {
     submit() {
-      var credentials = {
-        username: this.credentials.username,
-        password: this.credentials.password
-      }
-
-      auth.login(this, credentials).then((response) => {
-        if (response.error) {
-          this.error = response.error.msg
-        } else {
+      this.$store.dispatch('login', this.credentials).then(() => {
+        if (this.$store.getters.isLoggedIn) {
           this.$router.push({path: '/'})
+        } else {
+          this.error = response.error.msg
         }
       });
     }

@@ -5,6 +5,8 @@ import axios from 'axios'
 
 import App from './App'
 import router from './router'
+import store from './store';
+
 import auth from '@/auth.js'
 import taskItem from './components/TaskItem.vue'
 import listItem from './components/ListItem.vue'
