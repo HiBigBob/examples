@@ -76,7 +76,7 @@ export default {
       'deleteTask',
     ]),
     setElement(list) {
-      this.$store.dispatch('selectElement', { id: list._id, title: list.title });
+      this.$store.dispatch('selectElement', list ? { id: list._id, title: list.title } : {} );
     },
     addItem(value) {
       this.$store.dispatch('addTask', {title: value, listId: this.element.id});

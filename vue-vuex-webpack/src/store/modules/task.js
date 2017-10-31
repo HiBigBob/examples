@@ -3,8 +3,9 @@ import _ from 'lodash';
 import request from '@/store/request';
 import * as types from '@/store/mutation-types';
 
-const filterTask = (state) => {
-  let tasks = state.tasks
+const filter = (state) => {
+  let tasks = state.originTasks
+  let lists = state.originLists
 
   if (tasks.length == 0) {
     return;
@@ -12,7 +13,7 @@ const filterTask = (state) => {
 
   if (state.element.id) {
     tasks = tasks.filter(function (row) {
-      return row.listId == this.element.id
+      return row.listId == state.element.id
     }, this)
   }
 
@@ -27,14 +28,6 @@ const filterTask = (state) => {
     state.searchList = [];
   }
 
-  state.task = task;
-
-  return state
-};
-
-const filterList = (state) => {
-  let lists = state.lists
-
   if (state.searchList.length) {
     var tmpLists = [];
     lists.forEach(function (list) {
@@ -47,13 +40,16 @@ const filterList = (state) => {
     lists = tmpLists;
   }
 
-  state.lists = lists
+  state.tasks = tasks;
+  state.lists = lists;
 
   return state
 };
 
 // initial state
 const state = {
+  originLists: [],
+  originTasks: [],
   lists: [],
   tasks: [],
   searchList: [],
@@ -105,6 +101,7 @@ const actions = {
     commit(types.RECEIVE_SEARCH, {search});
   },
   selectElement({ commit }, element) {
+    console.log('element',element)
     commit(types.RECEIVE_ELEMENT, {element});
   },
 };
@@ -112,27 +109,29 @@ const actions = {
 // mutations
 const mutations = {
   [types.RECEIVE_LISTS](state, { lists }) {
-    state.lists = lists;
+    state.originLists = lists;
+    state = filter(state);
   },
 
   [types.RECEIVE_TASKS](state, { tasks }) {
-    state.tasks = tasks;
+    state.originTasks = tasks;
+    state = filter(state);
   },
 
   [types.RECEIVE_SEARCH](state, { search }) {
     state.searchTask = search;
-    state = filterTask(state);
-    state = filterList(state);
+    state = filter(state);
   },
 
   [types.RECEIVE_ELEMENT](state, { element }) {
     state.element = element;
+    state = filter(state);
   },
 
   [types.RECEIVE_ADD_TASK](state, { task }) {
     console.log('add task', task);
     state.task.push(task);
-    state = filterTask(state);
+    state = filter(state);
   },
 
   [types.RECEIVE_EDIT_TASK](state, { task }) {
