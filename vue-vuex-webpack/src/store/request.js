@@ -1,13 +1,15 @@
 import Vue from 'vue';
 
+const headers = {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('id_token')}`,
+  }
+};
+
 export default {
   getLists() {
     return new Promise((resolve, reject) => {
-      Vue.http.get('/lists', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('id_token')}`,
-        }
-      }).then((response) => {
+      Vue.http.get('/lists', headers).then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
@@ -21,11 +23,7 @@ export default {
 
   getTasks() {
     return new Promise((resolve, reject) => {
-      Vue.http.get('/tasks', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('id_token')}`,
-        }
-      }).then((response) => {
+      Vue.http.get('/tasks', headers).then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
@@ -64,8 +62,8 @@ export default {
   deleteTask(task) {
     return new Promise((resolve, reject) => {
       Vue.http.delete(`/tasks/${task.id}`, task, headers).then((response) => {
-        if (response.status == 200) {
-          resolve(response.data);
+        if (response.status == 204) {
+          resolve(task);
         }
       }).catch((error) => {
         reject(error);

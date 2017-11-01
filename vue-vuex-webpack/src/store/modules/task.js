@@ -81,20 +81,17 @@ const actions = {
   },
   addTask({ commit }, task) {
     request.addTask(task).then((task) => {
-      console.log('add task', task);
       commit(types.RECEIVE_ADD_TASK, { task });
     });
   },
   editTask({ commit }, task) {
     request.editTask(task).then((task) => {
-      console.log('edit task', task);
       commit(types.RECEIVE_EDIT_TASK, { task });
     });
   },
   deleteTask({ commit }, task) {
-    request.deleteTask(task).then((task) => {
-      console.log('delete task', task);
-      commit(types.RECEIVE_DELETE_TASK, { id: task.id });
+    request.deleteTask(task).then((res) => {
+      commit(types.RECEIVE_DELETE_TASK, { task });
     });
   },
   launchSearch({ commit }, search) {
@@ -129,23 +126,20 @@ const mutations = {
   },
 
   [types.RECEIVE_ADD_TASK](state, { task }) {
-    console.log('add task', task);
-    state.task.push(task);
+    state.tasks.push(task);
     state = filter(state);
   },
 
   [types.RECEIVE_EDIT_TASK](state, { task }) {
-    console.log('edit task', task);
     state.tasks.map((item) => {
-      if (item._id !== id) return item
+      if (item._id !== task._id) return item
       return Object.assign({}, item, task)
     })
   },
 
   [types.RECEIVE_DELETE_TASK](state, { task }) {
-    console.log('delete task', task);
     state.tasks = state.tasks.filter((item) => {
-      return item._id !== task._id
+      return item._id !== task.id
     })
   },
 };
