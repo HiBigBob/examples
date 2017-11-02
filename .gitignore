@@ -17,3 +17,5 @@
 
 api/data/db
 api/package-lock.json
+api-graphql/package-lock.json
+api-graphql/data/db
