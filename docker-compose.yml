@@ -13,21 +13,25 @@ services:
     depends_on:
       - mongodb
 
+  api-graphql:
+    build: api-graphql
+    command: npm start
+    volumes:
+      - ./api-graphql:/usr/app/
+    environment:
+      - PORT=3000
+    ports:
+      - "4022:3000"
+    depends_on:
+      - mongodb
+
   ember:
     build: ember
     command: npm start
     volumes:
       - ./ember:/usr/app/
     ports:
-      - "4022:3000"
-
-  vue:
-    build: vue
-    command: npm start
-    volumes:
-      - ./vue:/usr/app/
-    ports:
-      - "4023:3000"
+      - "4030:3000"
 
   vue-webpack:
     build: vue-webpack
@@ -35,7 +39,7 @@ services:
     volumes:
       - ./vue-webpack:/usr/app/
     ports:
-      - "4024:8080"
+      - "4031:8080"
 
   vue-vuex-webpack:
     build: vue-vuex-webpack
@@ -43,7 +47,7 @@ services:
     volumes:
       - ./vue-vuex-webpack:/usr/app/
     ports:
-      - "4025:8080"
+      - "4032:8080"
 
   mongodb:
     image: mongo:latest
